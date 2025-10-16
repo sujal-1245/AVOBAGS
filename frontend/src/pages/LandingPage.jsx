@@ -34,32 +34,78 @@ const ModelGLB = forwardRef(
     ref
   ) => {
     const gltf = useGLTF(src);
+    const [modelGroup] = useState(() => new THREE.Group());
     const [computedScale, setComputedScale] = useState(scale);
 
     useEffect(() => {
-      if (!gltf?.scene) return;
-      const scene = gltf.scene;
-      scene.scale.setScalar(1);
-      scene.position.set(0, 0, 0);
-      scene.updateMatrixWorld(true);
+      if (!gltf?.scene) {
+        console.log("🟡 GLTF not ready yet");
+        return;
+      }
 
-      const box = new THREE.Box3().setFromObject(scene);
-      const size = box.getSize(new THREE.Vector3());
-      const modelHeight = size.y || Math.max(size.x, size.z) || 1;
-      const maxDim = Math.max(size.x, size.y, size.z) || 1;
+      console.log("✅ GLTF loaded:", gltf);
+      console.log("Initial scene position:", gltf.scene.position);
+      console.log("Initial scene rotation:", gltf.scene.rotation);
 
-      const fov = 50 * (Math.PI / 180);
-      const cameraDistance = 6.5;
-      const viewportHeightAtDist = 2 * Math.tan(fov / 2) * cameraDistance;
-      const desiredWorldHeight = viewportHeightAtDist * maxVH;
-      const referenceDim = modelHeight > 0 ? modelHeight : maxDim;
-      const baseScale = (desiredWorldHeight / referenceDim) * scale;
-      setComputedScale(baseScale);
+      // Reset before applying anything
+      modelGroup.clear();
+      console.log("🧹 Cleared modelGroup");
 
-      box.setFromObject(scene);
-      const center = box.getCenter(new THREE.Vector3());
-      scene.position.set(-center.x, -center.y + 0.02, -center.z);
+      // Clone to avoid shared transforms
+      const cloned = gltf.scene.clone(true);
+      modelGroup.add(cloned);
+      console.log("📦 Cloned GLTF scene added to modelGroup");
+
+      // Ensure bounding boxes and transforms are ready
+      cloned.traverse((child) => {
+        if (child.isMesh) {
+          child.geometry.computeBoundingBox();
+          child.geometry.computeBoundingSphere();
+        }
+      });
+      cloned.updateMatrixWorld(true);
+      console.log("🔄 Updated matrix world for cloned scene");
+
+      // Prevent double-centering (React Strict Mode double-render fix)
+      let alreadyCentered = false;
+
+      // Delay bounding box computation one frame
+      requestAnimationFrame(() => {
+        if (alreadyCentered) {
+          console.log("⚠️ Skipped duplicate centering (Strict Mode second run)");
+          return;
+        }
+        alreadyCentered = true;
+
+        const box = new THREE.Box3().setFromObject(cloned);
+        const size = box.getSize(new THREE.Vector3());
+        const center = box.getCenter(new THREE.Vector3());
+
+        console.log("📏 Bounding box size:", size);
+        console.log("🎯 Bounding box center:", center);
+
+        const modelHeight = size.y || Math.max(size.x, size.z) || 1;
+        const maxDim = Math.max(size.x, size.y, size.z) || 1;
+
+        const fov = 50 * (Math.PI / 180);
+        const cameraDistance = 6.5;
+        const viewportHeightAtDist = 2 * Math.tan(fov / 2) * cameraDistance;
+        const desiredWorldHeight = viewportHeightAtDist * maxVH;
+        const referenceDim = modelHeight > 0 ? modelHeight : maxDim;
+        const baseScale = (desiredWorldHeight / referenceDim) * scale;
+
+        console.log("📐 Computed base scale:", baseScale);
+        setComputedScale(baseScale);
+
+        cloned.position.set(-center.x, -center.y + 0.02, -center.z);
+        cloned.updateMatrixWorld(true);
+
+        console.log("🎯 Final cloned position after centering:", cloned.position);
+        console.log("✅ Model centering and scaling applied successfully");
+      });
     }, [gltf, scale, maxVH]);
+
+    console.log("💡 Render cycle: computedScale =", computedScale);
 
     return (
       <group
@@ -69,7 +115,7 @@ const ModelGLB = forwardRef(
         scale={[computedScale, computedScale, computedScale]}
         dispose={null}
       >
-        {gltf && <primitive object={gltf.scene} />}
+        <primitive object={modelGroup} />
       </group>
     );
   }
@@ -128,32 +174,42 @@ function FloatingShapes({ count = 30, color = "white" }) {
 ====================================================== */
 function Hero3D({ isDark }) {
   const modelRef = useRef();
+  const scrollGroupRef = useRef(); // wrapper for scroll animations
   const controlsRef = useRef();
-  const scrollProgress = useRef(0); // 0 = top, 1 = bottom
+  const scrollProgress = useRef(0);
 
-  // Update scroll progress
+  // Track scroll progress across the whole page
   useEffect(() => {
-    ScrollTrigger.create({
-      trigger: ".hero",
+    const trigger = ScrollTrigger.create({
+      trigger: "body",
       start: "top top",
-      end: "bottom top",
+      end: "bottom bottom",
       onUpdate: (self) => (scrollProgress.current = self.progress),
-      scrub: true,
+      scrub: 0.6,
     });
-    return () => ScrollTrigger.getAll().forEach((t) => t.kill());
+    return () => trigger.kill();
   }, []);
 
+  // Animate scroll group dynamically
   useFrame(() => {
-    if (!modelRef.current) return;
+    if (!scrollGroupRef.current) return;
     const t = scrollProgress.current;
 
-    // Rotate along Y and X based on scroll
-    modelRef.current.rotation.y = t * Math.PI * 2; // 0 → 360deg
-    modelRef.current.rotation.x = t * -0.3; // 0 → -0.3 rad
+    // Rotation animation
+    scrollGroupRef.current.rotation.y = 0.6 * t * Math.PI * 2; // horizontal spin
+    scrollGroupRef.current.rotation.x = -0.2 * t;               // vertical tilt
+    scrollGroupRef.current.rotation.z = 0.05 * Math.sin(t * Math.PI * 2); // wobble
 
-    // Scale based on scroll
-    const scale = 0.3 + t * 0.3; // 0.3 → 0.6
-    modelRef.current.scale.set(scale, scale, scale);
+    // Scale animation
+    const baseScale = 0.6; 
+    const dynamicScale = baseScale + t * 0.3 + Math.sin(t * Math.PI * 3) * 0.05;
+    scrollGroupRef.current.scale.set(dynamicScale, dynamicScale, dynamicScale);
+
+    // Position animation (moves around the page)
+    const basePos = [1.5, 0, 0]; // initial position
+    scrollGroupRef.current.position.x = basePos[0] + Math.sin(t * Math.PI * 2) * 2;
+    scrollGroupRef.current.position.y = basePos[1] + Math.sin(t * Math.PI) * 1;
+    scrollGroupRef.current.position.z = basePos[2] + Math.sin(t * Math.PI * 0.5) * 1;
   });
 
   return (
@@ -167,28 +223,55 @@ function Hero3D({ isDark }) {
         intensity={0.25}
       />
 
-      <Suspense fallback={<Html center>...</Html>}>
-        <color attach="background" args={[isDark ? "#000" : "#fff"]} />
-        <perspectiveCamera makeDefault position={[0.6, 0.35, 5.0]} fov={50} />
-        <ModelGLB
-          ref={modelRef}
-          src={MODEL_PATH}
-          position={[0, 0, 0]}
-          rotation={[0, 0, 0]}
-          scale={0.6}
-        />
-        <Environment preset="studio" />
-        <FloatingShapes count={24} color={isDark ? "black" : "black/50"} />
-      </Suspense>
+      <Suspense
+  fallback={
+    <Html center>
+      <div className="flex flex-col items-center justify-center">
+        
+        {/* Animated dots */}
+        <div className="flex space-x-2">
+          {[...Array(3)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="w-3 h-3 rounded-full bg-gray-700 dark:bg-gray-300"
+              animate={{ y: ["0%", "-50%", "0%"] }}
+              transition={{
+                duration: 0.6,
+                repeat: Infinity,
+                repeatDelay: 0.1,
+                delay: i * 0.2,
+              }}
+            />
+          ))}
+        </div>
+      </div>
+    </Html>
+  }
+>
+  <color attach="background" args={[isDark ? "#000" : "#fff"]} />
+  <perspectiveCamera makeDefault position={[0.6, 0.35, 5.0]} fov={50} />
+
+  <group ref={scrollGroupRef} position={[1.25, 0, 0]}>
+    <ModelGLB
+      ref={modelRef}
+      src={MODEL_PATH}
+      position={[0, 0, 0]}
+      rotation={[0, 0, 0]}
+      scale={1}
+    />
+  </group>
+
+  <Environment preset="studio" />
+  <FloatingShapes count={24} color={isDark ? "black" : "black/50"} />
+</Suspense>
 
       <OrbitControls
-  ref={controlsRef}
-  enableZoom={false}
-  enablePan={false}
-  enableRotate={false}
-  enabled={typeof window !== "undefined" && window.innerWidth > 768}
-/>
-
+        ref={controlsRef}
+        enableZoom={false}
+        enablePan={false}
+        enableRotate={false}
+        enabled={typeof window !== "undefined" && window.innerWidth > 768}
+      />
     </>
   );
 }
@@ -332,17 +415,16 @@ export default function LandingPage() {
           transition={{ duration: 1.5, ease: "easeOut" }}
         >
           <Canvas
-  camera={{ position: [0.6, 0.35, 5.0], fov: 50 }}
-  gl={{ antialias: true }}
-  className="w-full h-screen"
-  style={{
-    touchAction: "pan-y",
-    pointerEvents: window.innerWidth <= 768 ? "none" : "auto",
-  }}
->
-  <Hero3D isDark={isDark} />
-</Canvas>
-
+            camera={{ position: [0.6, 0.35, 5.0], fov: 50 }}
+            gl={{ antialias: true }}
+            className="w-full h-screen"
+            style={{
+              touchAction: "pan-y",
+              pointerEvents: window.innerWidth <= 768 ? "none" : "auto",
+            }}
+          >
+            <Hero3D isDark={isDark} />
+          </Canvas>
 
           <div className="absolute inset-0 pointer-events-none flex flex-col items-center justify-center z-20 px-6">
             <div className="max-w-3xl text-center hero-text">

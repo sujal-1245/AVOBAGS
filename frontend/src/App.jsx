@@ -110,7 +110,7 @@ const App = () => {
 
       {/* Routes */}
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<NewHome />} />
         <Route path="/newlp" element={<NewHome />} />
         <Route
           path="/shop"

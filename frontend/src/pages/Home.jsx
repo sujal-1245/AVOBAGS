@@ -151,7 +151,12 @@ export default function Home() {
               >
                 <StatIcon className="mx-auto text-5xl mb-4 text-yellow-400" />
                 <h3 className="text-4xl font-bold">
-                  <CountUp end={stat.end} duration={3} enableScrollSpy scrollSpyDelay={200} />
+                  <CountUp
+                    end={stat.end}
+                    duration={3}
+                    enableScrollSpy
+                    scrollSpyDelay={200}
+                  />
                   +
                 </h3>
                 <p>{stat.label}</p>
@@ -203,7 +208,9 @@ export default function Home() {
                   <h3 className="font-semibold text-xl text-black dark:text-white">
                     {f.title}
                   </h3>
-                  <p className="mt-3 text-yellow-800/80 dark:text-yellow-100/80">{f.desc}</p>
+                  <p className="mt-3 text-yellow-800/80 dark:text-yellow-100/80">
+                    {f.desc}
+                  </p>
                 </motion.div>
               );
             })}
@@ -220,7 +227,9 @@ export default function Home() {
             whileInView={{ y: 0, opacity: 1 }}
             transition={{ duration: 1 }}
           >
-            <h2 className="text-4xl font-bold text-black dark:text-white">Collection</h2>
+            <h2 className="text-4xl font-bold text-black dark:text-white">
+              Collection
+            </h2>
             {/* <p className="text-yellow-700 dark:text-yellow-200 text-sm">
               Refined silhouettes for daily life
             </p> */}
@@ -251,8 +260,12 @@ export default function Home() {
                     whileInView={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.3, duration: 1 }}
                   >
-                    <h4 className="font-semibold text-black dark:text-white">{p.name}</h4>
-                    <p className="text-yellow-800 dark:text-yellow-100 text-sm mt-1">{p.desc}</p>
+                    <h4 className="font-semibold text-black dark:text-white">
+                      {p.name}
+                    </h4>
+                    <p className="text-yellow-800 dark:text-yellow-100 text-sm mt-1">
+                      {p.desc}
+                    </p>
                   </motion.div>
                 </div>
                 <motion.div
@@ -277,84 +290,84 @@ export default function Home() {
       </section>
 
       {/* TESTIMONIALS */}
-      <section className="py-24 bg-white dark:bg-black relative">
-  <div className="container mx-auto px-6">
-    <motion.h2
-      className="text-4xl font-bold mb-12 text-center text-black dark:text-white"
-      initial={{ y: 30, opacity: 0 }}
-      whileInView={{ y: 0, opacity: 1 }}
-      transition={{ duration: 1 }}
-    >
-      What Customers Are Saying
-    </motion.h2>
-
-    <Swiper
-      modules={[Autoplay, EffectCoverflow, Pagination]}
-      effect="coverflow"
-      grabCursor={true}
-      centeredSlides={true}
-      slidesPerView={1} // MOBILE override
-      breakpoints={{
-        640: { slidesPerView: "auto" }, // sm and up use original desktop widths
-      }}
-      coverflowEffect={{
-        rotate: 10,
-        stretch: 0,
-        depth: 120,
-        modifier: 1,
-        slideShadows: false,
-      }}
-      pagination={{ clickable: true }}
-      autoplay={{ delay: 3500 }}
-    >
-      {testimonials.map((t, i) => (
-        <SwiperSlide
-          key={t.id}
-          style={{ width: 300 }} // smaller width for mobile only
-          className="flex justify-center"
-        >
-          <motion.div
-            className="bg-white dark:bg-white/90 rounded-3xl p-6 shadow-xl hover:shadow-2xl transition text-black" // smaller padding for mobile
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.2, duration: 1 }}
+      <section className="py-24 bg-white dark:bg-black relative block md:hidden">
+        <div className="container mx-auto px-6">
+          <motion.h2
+            className="text-4xl font-bold mb-12 text-center text-black dark:text-white"
+            initial={{ y: 30, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ duration: 1 }}
           >
-            <div className="flex flex-col sm:flex-row items-center gap-4">
-              <motion.img
-                src={t.img}
-                alt={t.name}
-                className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover" // smaller avatar on mobile
-                initial={{ scale: 0.8, opacity: 0 }}
-                whileInView={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 0.3, duration: 1 }}
-              />
-              <div className="text-center sm:text-left mt-2 sm:mt-0">
-                <motion.p
-                  className="italic text-gray-700 dark:text-gray-300 text-sm sm:text-base"
-                  initial={{ x: -20, opacity: 0 }}
-                  whileInView={{ x: 0, opacity: 1 }}
-                  transition={{ delay: 0.4, duration: 1 }}
-                >
-                  "{t.text}"
-                </motion.p>
-                <motion.p
-                  className="mt-2 font-semibold text-black dark:text-white text-sm sm:text-base"
-                  initial={{ x: -20, opacity: 0 }}
-                  whileInView={{ x: 0, opacity: 1 }}
-                  transition={{ delay: 0.5, duration: 1 }}
-                >
-                  {t.name}
-                </motion.p>
-              </div>
-            </div>
-          </motion.div>
-        </SwiperSlide>
-      ))}
-    </Swiper>
-  </div>
-</section>
+            What Customers Are Saying
+          </motion.h2>
 
-<section className="py-24 bg-white dark:bg-black relative">
+          <Swiper
+            modules={[Autoplay, EffectCoverflow, Pagination]}
+            effect="coverflow"
+            grabCursor={true}
+            centeredSlides={true}
+            slidesPerView={1} // MOBILE override
+            breakpoints={{
+              640: { slidesPerView: 1 }, // sm and up still mobile style
+            }}
+            coverflowEffect={{
+              rotate: 10,
+              stretch: 0,
+              depth: 120,
+              modifier: 1,
+              slideShadows: false,
+            }}
+            pagination={{ clickable: true }}
+            autoplay={{ delay: 3500 }}
+          >
+            {testimonials.map((t, i) => (
+              <SwiperSlide
+                key={t.id}
+                style={{ width: 300 }}
+                className="flex justify-center"
+              >
+                <motion.div
+                  className="bg-white dark:bg-white/90 rounded-3xl p-6 shadow-xl hover:shadow-2xl transition text-black"
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.2, duration: 1 }}
+                >
+                  <div className="flex flex-col sm:flex-row items-center gap-4">
+                    <motion.img
+                      src={t.img}
+                      alt={t.name}
+                      className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover"
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      whileInView={{ scale: 1, opacity: 1 }}
+                      transition={{ delay: 0.3, duration: 1 }}
+                    />
+                    <div className="text-center sm:text-left mt-2 sm:mt-0">
+                      <motion.p
+                        className="italic text-gray-700 dark:text-gray-300 text-sm sm:text-base"
+                        initial={{ x: -20, opacity: 0 }}
+                        whileInView={{ x: 0, opacity: 1 }}
+                        transition={{ delay: 0.4, duration: 1 }}
+                      >
+                        "{t.text}"
+                      </motion.p>
+                      <motion.p
+                        className="mt-2 font-semibold text-black dark:text-white text-sm sm:text-base"
+                        initial={{ x: -20, opacity: 0 }}
+                        whileInView={{ x: 0, opacity: 1 }}
+                        transition={{ delay: 0.5, duration: 1 }}
+                      >
+                        {t.name}
+                      </motion.p>
+                    </div>
+                  </div>
+                </motion.div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+      </section>
+
+      <section className="py-24 bg-white dark:bg-black relative hidden md:block">
         <div className="container mx-auto px-6">
           <motion.h2
             className="text-4xl font-bold mb-12 text-center text-black dark:text-white"
@@ -423,7 +436,6 @@ export default function Home() {
           </Swiper>
         </div>
       </section>
-
 
       {/* FOOTER */}
       <footer className="bg-white dark:bg-black text-yellow-800 dark:text-yellow-100 py-12">
