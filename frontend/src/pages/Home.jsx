@@ -444,9 +444,21 @@ export default function Home() {
             {
               title: "AVOBAGS",
               content: (
-                <p className="mt-2 text-sm">
-                  Premium bags crafted in India. Repair for life.
-                </p>
+                <>
+                <div className="mt-2 text-sm flex flex-col md:flex-row items-center md:items-start gap-3">
+                  {/* <p className="mt-2 md:mt-0">
+                    Premium bags crafted in India. Repair for life.
+                  </p> */}
+                  
+                </div>
+                <img
+                    src="/assets/images/AVOlogo.jpg"
+                    alt="AVOBAGS Logo"
+                    className="w-28 h-28 object-contain m-5 rounded-full border-2 border-red-500"
+                  />
+                
+                
+                </>
               ),
             },
             {
@@ -483,6 +495,7 @@ export default function Home() {
             </motion.div>
           ))}
         </div>
+
         <motion.div
           className="mt-8 text-center text-xs text-yellow-700 dark:text-yellow-200"
           initial={{ opacity: 0 }}
