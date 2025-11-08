@@ -115,10 +115,10 @@ AVOBAGS/
 
 <p align="center">
   <a href="https://vercel.com" target="_blank">
-    <img src="https://img.shields.io/badge/🛒%20Deploy%20Frontend%20on%20Vercel-ff6f61?style=for-the-badge&logo=vercel&logoColor=white" />
+    <img src="https://img.shields.io/badge/%20Frontend%20on%20Vercel-ff6f61?style=for-the-badge&logo=vercel&logoColor=white" />
   </a>
   <a href="https://render.com" target="_blank">
-    <img src="https://img.shields.io/badge/⚙️%20Deploy%20Backend%20on%20Render-4caf50?style=for-the-badge&logo=render&logoColor=white" />
+    <img src="https://img.shields.io/badge/%20Backend%20on%20Render-4caf50?style=for-the-badge&logo=render&logoColor=white" />
   </a>
 </p>
 
@@ -171,7 +171,7 @@ Computer Science Engineer • MERN Developer • 3D & Motion Design Enthusiast
 
 <p align="center">
   <a href="https://github.com/sujal-1245/AVOBAGS">
-    <img src="https://img.shields.io/badge/⭐%20Star%20This%20Repository-FFD700?style=for-the-badge&logo=github&logoColor=black" />
+    <img src="https://img.shields.io/badge/%20Star%20This%20Repository-FFD700?style=for-the-badge&logo=github&logoColor=black" />
   </a>
 </p>
 
@@ -181,10 +181,9 @@ Computer Science Engineer • MERN Developer • 3D & Motion Design Enthusiast
 
 <p align="center">
   <a href="https://www.avobags.com">
-    <img src="https://img.shields.io/badge/👜%20Explore%20AVO%20BAGS-ff6f61?style=for-the-badge&logo=google-chrome&logoColor=white" />
+    <img src="https://img.shields.io/badge/%20Explore%20AVO%20BAGS-ff6f61?style=for-the-badge&logo=google-chrome&logoColor=white" />
   </a>
 </p>
-```
 
----
+
 
