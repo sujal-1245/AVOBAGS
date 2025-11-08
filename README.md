@@ -4,13 +4,13 @@
 
 <p align="center">
   <a href="https://www.avobags.com">
-    <img src="https://img.shields.io/badge/🛍️%20Visit%20Live%20Website-ff6f61?style=for-the-badge&logo=google-chrome&logoColor=white" />
+    <img src="https://img.shields.io/badge/%20Visit%20Live%20Website-ff6f61?style=for-the-badge&logo=google-chrome&logoColor=white" />
   </a>
   <a href="https://avobags.vercel.app">
-    <img src="https://img.shields.io/badge/⚡%20Open%20Vercel%20Preview-000000?style=for-the-badge&logo=vercel" />
+    <img src="https://img.shields.io/badge/%20Open%20Vercel%20Preview-000000?style=for-the-badge&logo=vercel" />
   </a>
   <a href="https://github.com/sujal-1245/AVOBAGS">
-    <img src="https://img.shields.io/badge/💻%20View%20GitHub%20Repo-4caf50?style=for-the-badge&logo=github&logoColor=white" />
+    <img src="https://img.shields.io/badge/%20View%20GitHub%20Repo-4caf50?style=for-the-badge&logo=github&logoColor=white" />
   </a>
 </p>
 
