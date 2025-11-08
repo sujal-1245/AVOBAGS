@@ -162,8 +162,7 @@ Then open a Pull Request 🚀
 ## 👤 Author
 
 **Sujal**
-Computer Science Engineer • MERN Developer • 3D & Motion Design Enthusiast
-🌐 [https://www.avobags.com](https://www.avobags.com)
+Computer Science Engineer • MERN Developer 
 
 ---
 
