@@ -57,9 +57,9 @@ It demonstrates how a modern store can merge art direction, motion design, and r
 
 | Home / Hero | Product Page | Cart & Checkout |
 |:------------:|:-------------:|:---------------:|
-| ![Home Screenshot](./frontend/public/screenshots/home.png) | ![Product Screenshot](./frontend/public/screenshots/product.png) | ![Cart Screenshot](./frontend/public/screenshots/cart.png) |
+| <img width="1892" height="900" alt="image" src="https://github.com/user-attachments/assets/508254cc-a0b7-422f-a2ce-4cb76165b077" /> | <img width="1896" height="896" alt="image" src="https://github.com/user-attachments/assets/a0934963-92bc-431f-a962-305e579c05af" /> | <img width="575" height="898" alt="image" src="https://github.com/user-attachments/assets/ccf7fe7f-ca17-496b-869a-aa3f2983ff8d" /> |
 
-> *(Tip: capture high-resolution screenshots at 1440×900 and store in `frontend/public/screenshots/`)*
+
 
 ---
 
